@@ -1,0 +1,22 @@
+<div class="info">
+                                        <img src=${data.result[0].posterURLs.original} class="poster">
+                                        <div>
+                                            <h2>${data.result[0].title}</h2>
+                                            <div class="rating">
+                                                <img src=${star}>
+                                                <h4>${data.result[0].imdbRating}</h4>
+                                            </div>
+                                            <div class="details">
+                                                <span>${data.result[0].type}</span>
+                                                <span>${data.result[0].year}</span>
+                                                <span>${data.result[0].originalLanguage}</span>
+                                            </div>
+                                            <div class="genre">
+                                                <div>${data.result[0].genres.split(",").join("</div><div>")}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h3>Plot:</h3>
+                                    <p>${data.result[0].overview}</p>
+                                    <h3>Cast:</h3>
+                                    <p>${data.result[0].cast}</p>

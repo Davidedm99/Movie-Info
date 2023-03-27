@@ -10,7 +10,7 @@ window.onload = function(){
     background.style.backgroundImage = 'url('+images[number]+')'
 }
 
-
+//code for the search
 let movieNameRef = document.getElementById("movie-name");
 let searchBtn = document.getElementById("search-btn");
 let result = document.getElementById("result");
@@ -26,7 +26,9 @@ let getMovie = () =>{
         result.innerHTML = `<h3 class="msg">Please enter a movie name </h3>`;
     }
     else{
-        fetch(url).then(response => response.json()).then((data) =>{
+        fetch(url)
+        .then(response => response.json())
+        .then((data) =>{
             //movie exists
             if(data.Response == "True"){
                 result.innerHTML = `<div class="info">
@@ -66,5 +68,10 @@ let getMovie = () =>{
     }
 };
 
+movieNameRef.addEventListener("keydown", (event) => {
+    if(event.key == "Enter"){
+        getMovie;
+    }
+});
 searchBtn.addEventListener("click", getMovie);
 window.addEventListener("load", getMovie);
