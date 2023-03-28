@@ -1,77 +1,121 @@
-var background = document.getElementById('body');
-images = ['./assets/images/image1.png', './assets/images/image2.png', './assets/images/image3.png'];
-
-var imgCount = images.length
-//alert(imgCount)
-var number = Math.floor(Math.random() * imgCount);
-//alert(number)
-
-window.onload = function(){
-    background.style.backgroundImage = 'url('+images[number]+')'
-}
-
 //code for the search
 let movieNameRef = document.getElementById("movie-name");
 let searchBtn = document.getElementById("search-btn");
-let result = document.getElementById("result");
+let pageBody = document.getElementById("result");
+let background = document.getElementById("body");
+
+const options = {
+	method: 'GET',
+	headers: {
+		'X-RapidAPI-Key': '0951140ab4msh3c7f0ae64b745abp1b1ae7jsn6936fb45311a',
+		'X-RapidAPI-Host': 'streaming-availability.p.rapidapi.com'
+	}
+};
 
 //fetch data from api
-
 let getMovie = () =>{
     let movieName = movieNameRef.value;
-    let url = `http://www.omdbapi.com/?t=${movieName}&apikey=a99e7701`;
+    let url = `https://streaming-availability.p.rapidapi.com/v2/search/title?title=${movieName}&country=us`;
 
     //empty field
     if(movieName.length <= 0){
-        result.innerHTML = `<h3 class="msg">Please enter a movie name </h3>`;
+        pageBody.innerHTML = `<h3 class="msg">Please enter a movie name </h3>`;
     }
     else{
-        fetch(url)
+        fetch(url, options)
         .then(response => response.json())
-        .then((data) =>{
+        .then((data) => {
+            //movie doesn't exists
+            if(data.result.length === 0){
+                pageBody.innerHTML = `<h3 class="msg">Movie not Found!</h3>`
+            }
             //movie exists
-            if(data.Response == "True"){
-                result.innerHTML = `<div class="info">
-                                        <img src=${data.Poster} class="poster">
+            else{
+                console.log(data.result[0]);
+                
+                //movie or series
+                var releaseYear = "";
+                if(data.result[0].type == "movie"){
+                    releaseYear = data.result[0].year;
+                }else{
+                    releaseYear = data.result[0].firstAirYear;
+                }
+
+                //genres 
+                var genresString = "";
+                let genresLenght = data.result[0].genres.length;
+                for(var i=0; i < genresLenght; i++){
+                    if(i == genresLenght - 1){
+                        genresString = genresString.concat(data.result[0].genres[i].name);
+                    }else{
+                        genresString = genresString.concat(data.result[0].genres[i].name, " ");
+                    }
+                }
+
+                //cast 
+                var castString = "";
+                let castLength = data.result[0].cast.length;
+                for(var i=0; i < castLength; i++){
+                    if(i == castLength - 1){
+                        castString = castString.concat(data.result[0].cast[i]);
+                    }else{
+                        castString = castString.concat(data.result[0].cast[i], ", ");
+                    }
+                }
+
+                //streaming availability
+                var streamString = "";
+                let streamtLength = Object.getOwnPropertyNames(data.result[0].streamingInfo.us).length;
+                for(var i=0; i < streamtLength; i++){
+                    if(i == streamtLength - 1){
+                        streamString = streamString.concat(Object.getOwnPropertyNames(data.result[0].streamingInfo.us)[i]);
+                    }else{
+                        streamString = streamString.concat(Object.getOwnPropertyNames(data.result[0].streamingInfo.us)[i], " ");
+                    }
+                }
+
+                //change background based on the film chosen
+                background.style.backgroundImage = 'url(' + data.result[0].posterURLs.original + ')';
+                background.style.backgroundRepeat = "repeat-y";
+                background.style.backgroundPosition = "center";
+                background.style.backgroundSize = "cover";
+                //background.style.filter = "blur(8px)"
+
+                pageBody.innerHTML =`<div class="info">
+                                        <img src=${data.result[0].posterURLs.original} class="poster">
                                         <div>
-                                            <h2>${data.Title}</h2>
+                                            <h2>${data.result[0].title}</h2>
                                             <div class="rating">
-                                                <img src="../images/star.png">
-                                                <h4>${data.imdbRating}</h4>
+                                                <img src="./assets/images/star.png">
+                                                <h4>${(data.result[0].imdbRating)/10}</h4>
                                             </div>
                                             <div class="details">
-                                                <span>${data.Rated}</span>
-                                                <span>${data.Year}</span>
-                                                <span>${data.Runtime}</span>
+                                                <span>${data.result[0].type}</span>
+                                                <span>${releaseYear}</span>
+                                                <span>PEGI ${data.result[0].advisedMinimumAudienceAge}</span>
                                             </div>
                                             <div class="genre">
-                                                <div>${data.Genre.split(",").join("</div><div>")}</div>
+                                                <div>${genresString.split(" ", 3).join("</div><div>")}</div>
+                                            </div>
+                                            <h3>Available on: </h3>
+                                            <div class="stream">
+                                                <div>${streamString.split(" ", 3).join("</div><div>")}</div>
                                             </div>
                                         </div>
                                     </div>
                                     <h3>Plot:</h3>
-                                    <p>${data.Plot}</p>
+                                    <p>${data.result[0].overview}</p>
                                     <h3>Cast:</h3>
-                                    <p>${data.Actors}</p>
+                                    <p>${castString}</p>
                                     `;
-            }
-
-            //movie don't exists
-            else{
-                result.innerHTML = `<h3 class="msg">${data.Error}</h3>`
             }   
         })
         //error catching
         .catch(() =>{
-            result.innerHTML = `<h3 class="msg>Error Occured</h3>`;
+            pageBody.innerHTML = `<h3 class="msg>Error Occured</h3>`;
+            console.log(Error);
         });
-    }
-};
+    }};
 
-movieNameRef.addEventListener("keydown", (event) => {
-    if(event.key == "Enter"){
-        getMovie;
-    }
-});
 searchBtn.addEventListener("click", getMovie);
 window.addEventListener("load", getMovie);

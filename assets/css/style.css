@@ -9,6 +9,7 @@
 
 body{
     height: 100vh;
+    background-color: white;
 }
 
 .container{
@@ -67,6 +68,7 @@ body{
 
 .poster{
     width: 100%;
+    border-radius: 0.1em;
 }
 
 h2{
@@ -80,12 +82,11 @@ h2{
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.6em;
     margin: 0.6em 0 0.9em 0;
 }
 
 .rating img{
-    width: 1.2em;
+    width: 2em;
 }
 
 .rating h4{
@@ -107,9 +108,30 @@ h2{
 .genre{
     display: flex;
     justify-content: space-evenly;
+    margin-bottom: 10px;
 }
 
 .genre div{
+    border: 1px solid darkgrey;
+    font-size: 0.75em;
+    padding: 0.4em 1.6em;
+    border-radius: 0.4em;
+    font-weight: 300;
+}
+
+.stream{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.info h3{
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 1.2em;
+    letter-spacing: 0.06em;
+}
+
+.stream div{
     border: 1px solid darkgrey;
     font-size: 0.75em;
     padding: 0.4em 1.6em;
