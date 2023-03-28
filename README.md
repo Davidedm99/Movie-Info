@@ -1,4 +1,4 @@
 # Movie-Finder
-Simple app that gives some info about a movie using OMDb API, the working app can be found [here](https://davidedm99.github.io/Movie-Info/) but still need some work to do.<br>
+Simple app that gives some info about a movie using RapidAPI, the working app can be found [here](https://davidedm99.github.io/Movie-Info/).<br>
 
-Working on a better version that filter duplicates, tells the availability on the main streaming platforms based on the country and let's switch language :octocat:
+Now are shown all the streaming services available and the background changes based on the searched movie, need some styling with css but for now it works fine :octocat:
