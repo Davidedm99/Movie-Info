@@ -64,13 +64,17 @@ let getMovie = () =>{
                 }
 
                 //streaming availability
+                /* problem lays in case there's no streaming availability, check if is possible 
+                to avoid putting a box if string is empty*/
                 var streamString = "";
-                let streamtLength = Object.getOwnPropertyNames(data.result[0].streamingInfo.us).length;
-                for(var i=0; i < streamtLength; i++){
-                    if(i == streamtLength - 1){
-                        streamString = streamString.concat(Object.getOwnPropertyNames(data.result[0].streamingInfo.us)[i]);
-                    }else{
-                        streamString = streamString.concat(Object.getOwnPropertyNames(data.result[0].streamingInfo.us)[i], " ");
+                if(Object.getOwnPropertyNames(data.result[0].streamingInfo).length != 0){
+                    let streamtLength = Object.getOwnPropertyNames(data.result[0].streamingInfo.us).length;
+                    for(var i=0; i < streamtLength; i++){
+                        if(i == streamtLength - 1){
+                            streamString = streamString.concat(Object.getOwnPropertyNames(data.result[0].streamingInfo.us)[i]);
+                        }else{
+                            streamString = streamString.concat(Object.getOwnPropertyNames(data.result[0].streamingInfo.us)[i], " ");
+                        }
                     }
                 }
 
@@ -83,7 +87,7 @@ let getMovie = () =>{
 
                 pageBody.innerHTML =`<div class="info">
                                         <img src=${data.result[0].posterURLs.original} class="poster">
-                                        <div>
+                                        <div class="miscellaneous">
                                             <h2>${data.result[0].title}</h2>
                                             <div class="rating">
                                                 <img src="./assets/images/star.png">
@@ -100,6 +104,10 @@ let getMovie = () =>{
                                             <h3>Available on: </h3>
                                             <div class="stream">
                                                 <div>${streamString.split(" ", 3).join("</div><div>")}</div>
+                                            </div>
+                                            <h3>Youtube Trailer </h3>
+                                            <div class="trailer">
+                                                <a href="${data.result[0].youtubeTrailerVideoLink}" target="_blank">Youtube link</a>
                                             </div>
                                         </div>
                                     </div>
