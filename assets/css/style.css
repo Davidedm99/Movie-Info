@@ -10,6 +10,8 @@
 body{
     height: 100vh;
     background-color: white;
+    -webkit-backdrop-filter: blur(7px);
+    backdrop-filter: blur(7px);
 }
 
 .container{
@@ -24,6 +26,9 @@ body{
     left: 50%;
     border-radius: 0.6em;
     box-shadow: 1.2em 2em 3em rgba(0, 0, 0, 0.2);
+
+    -webkit-backdrop-filter: blur(0px);
+    backdrop-filter: blur(0px);
 }
 
 .search-container{
@@ -188,5 +193,8 @@ p{
     }
     .info{
         grid-template-columns: 1fr;
+    }
+    .miscellaneous{
+        padding-left: 0em;
     }
 }

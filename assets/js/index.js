@@ -2,7 +2,7 @@
 let movieNameRef = document.getElementById("movie-name");
 let searchBtn = document.getElementById("search-btn");
 let pageBody = document.getElementById("result");
-let background = document.getElementById("body");
+let background = document.getElementById("background");
 
 const options = {
 	method: 'GET',
@@ -83,8 +83,8 @@ let getMovie = () =>{
                 background.style.backgroundRepeat = "repeat-y";
                 background.style.backgroundPosition = "center";
                 background.style.backgroundSize = "cover";
-                //background.style.filter = "blur(8px)"
 
+                //building the page based on the result
                 pageBody.innerHTML =`<div class="info">
                                         <img src=${data.result[0].posterURLs.original} class="poster">
                                         <div class="miscellaneous">
